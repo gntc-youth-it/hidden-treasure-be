@@ -1,10 +1,16 @@
 package com.hidden_treasure.treasure.domain;
 
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import java.time.LocalDateTime;
+import jakarta.persistence.JoinColumn;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,12 +24,21 @@ public class Treasure {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Embedded
     private QRCode qrCode;
 
-    private QRStatus qrStatus;
+    @ElementCollection
+    @CollectionTable(name = "treasure_scans", joinColumns = @JoinColumn(name = "treasure_id"))
+    @Column(name = "team_number")
+    private Set<Integer> scannedTeams = new HashSet<>();
 
-    private LocalDateTime createdAt;
+    public boolean isAlreadyScannedByTeam(int teamNumber) {
+        return scannedTeams.contains(teamNumber);
+    }
 
-    private LocalDateTime usedAt;
-
+    public void addScannedTeam(int teamNumber) {
+        if (!scannedTeams.add(teamNumber)) {
+            throw new IllegalArgumentException("This team has already scanned this treasure.");
+        }
+    }
 }
