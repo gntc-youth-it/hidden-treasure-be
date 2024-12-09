@@ -25,18 +25,23 @@ jobs:
         DB_HOST: ${{ secrets.DB_HOST }}
         DB_USERNAME: ${{ secrets.DB_USERNAME }}
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-    
+
     - name: Deploy to EC2
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.EC2_HOST }}
         username: ubuntu
         key: ${{ secrets.EC2_SSH_KEY }}
+        envs: DB_HOST,DB_USERNAME,DB_PASSWORD
+        environment: |
+          DB_HOST=${{ secrets.DB_HOST }}
+          DB_USERNAME=${{ secrets.DB_USERNAME }}
+          DB_PASSWORD=${{ secrets.DB_PASSWORD }}
         script: |
-          echo "DB_HOST=${{ secrets.DB_HOST }}" | sudo tee -a /etc/environment
-          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" | sudo tee -a /etc/environment
-          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" | sudo tee -a /etc/environment
-          source /etc/environment
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> ~/.profile
+          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> ~/.profile
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> ~/.profile
+          source ~/.profile
           sudo systemctl restart spring-app
           
     - name: Copy JAR
