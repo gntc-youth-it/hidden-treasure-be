@@ -32,16 +32,27 @@ jobs:
         host: ${{ secrets.EC2_HOST }}
         username: ubuntu
         key: ${{ secrets.EC2_SSH_KEY }}
-        envs: DB_HOST,DB_USERNAME,DB_PASSWORD
-        environment: |
-          DB_HOST=${{ secrets.DB_HOST }}
-          DB_USERNAME=${{ secrets.DB_USERNAME }}
-          DB_PASSWORD=${{ secrets.DB_PASSWORD }}
         script: |
-          echo "DB_HOST=${{ secrets.DB_HOST }}" >> ~/.profile
-          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> ~/.profile
-          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> ~/.profile
-          source ~/.profile
+          sudo tee /etc/systemd/system/spring-app.service << EOF
+          [Unit]
+          Description=Spring Boot Application
+          After=network.target
+
+          [Service]
+          Type=simple
+          User=ubuntu
+          WorkingDirectory=/home/ubuntu/app
+          Environment="DB_HOST=${{ secrets.DB_HOST }}"
+          Environment="DB_USERNAME=${{ secrets.DB_USERNAME }}"
+          Environment="DB_PASSWORD=${{ secrets.DB_PASSWORD }}"
+          ExecStart=/usr/bin/java -jar hidden_treasure-0.0.1-SNAPSHOT.jar
+          Restart=always
+
+          [Install]
+          WantedBy=multi-user.target
+          EOF
+
+          sudo systemctl daemon-reload
           sudo systemctl restart spring-app
           
     - name: Copy JAR
