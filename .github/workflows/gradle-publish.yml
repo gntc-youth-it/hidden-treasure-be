@@ -33,7 +33,11 @@ jobs:
         username: ubuntu
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
-          rm -f /home/ubuntu/app/*.jar
+          echo "DB_HOST=${{ secrets.DB_HOST }}" | sudo tee -a /etc/environment
+          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" | sudo tee -a /etc/environment
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" | sudo tee -a /etc/environment
+          source /etc/environment
+          sudo systemctl restart spring-app
           
     - name: Copy JAR
       uses: appleboy/scp-action@master
