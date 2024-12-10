@@ -1,6 +1,8 @@
 package com.hidden_treasure.treasure.domain;
 
 import com.google.zxing.WriterException;
+import com.hidden_treasure.common.exception.BadRequestException;
+import com.hidden_treasure.common.exception.model.ExceptionCode;
 import com.hidden_treasure.treasure.model.TreasureFindRequest;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
@@ -17,6 +19,8 @@ import java.util.Set;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import static com.hidden_treasure.common.exception.model.ExceptionCode.TREASURE_ALREADY_FOUND;
 
 @Entity
 @Getter
@@ -57,7 +61,7 @@ public class Treasure {
 
     public void addScannedTeam(TreasureFindRequest request) {
         if (!scannedTeams.add(request.getTeamNumber())) {
-            throw new IllegalArgumentException("이미 찾은 보물입니다.");
+            throw new BadRequestException(TREASURE_ALREADY_FOUND);
         }
     }
 }
