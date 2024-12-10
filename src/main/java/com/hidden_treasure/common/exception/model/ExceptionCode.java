@@ -12,6 +12,8 @@ public enum ExceptionCode {
     TREASURE_NOT_FOUND(7001, "해당 보물을 찾을 수 없습니다."),
     TREASURE_ALREADY_FOUND(7101, "이미 발견한 보물 입니다."),
 
+    TEAM_NOT_FOUND(8001, "해당 팀을 찾을 수 없습니다."),
+
     INTERNAL_SERVER_ERROR(9999, "서버 에러가 발생했습니다.");
 
     private final int code;
