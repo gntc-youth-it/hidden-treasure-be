@@ -3,10 +3,7 @@ package com.hidden_treasure.treasure.controller;
 import com.hidden_treasure.treasure.service.TreasureService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,7 +17,7 @@ public class TreasureController {
     }
 
     @PostMapping("/treasure")
-    public ResponseEntity<?> generateTreasure() {
-        return ResponseEntity.ok(treasureService.generateTreasure());
+    public ResponseEntity<?> generateTreasure(@RequestParam Integer treasureCount) {
+        return ResponseEntity.ok(treasureService.generateTreasure(treasureCount));
     }
 }

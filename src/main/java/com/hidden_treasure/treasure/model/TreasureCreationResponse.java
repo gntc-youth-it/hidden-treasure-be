@@ -5,9 +5,9 @@ import lombok.Getter;
 
 @Getter
 public class TreasureCreationResponse {
-    private final Long id;
+    private final boolean succeed;
 
-    public TreasureCreationResponse(final Treasure treasure) {
-        this.id = treasure.getId();
+    public TreasureCreationResponse() {
+        this.succeed = true;
     }
 }

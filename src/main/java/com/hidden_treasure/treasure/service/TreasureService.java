@@ -7,6 +7,9 @@ import com.hidden_treasure.treasure.repository.TreasureRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class TreasureService {
@@ -19,9 +22,12 @@ public class TreasureService {
         return new TreasureImageResponse(treasure);
     }
 
-    public TreasureCreationResponse generateTreasure() {
-        Treasure treasure = Treasure.createTreasure();
-        treasureRepository.save(treasure);
-        return new TreasureCreationResponse(treasure);
+    public TreasureCreationResponse generateTreasure(int treasureCount) {
+        List<Treasure> treasures = new ArrayList<>();
+        for (int i = 0; i < treasureCount; i++) {
+            treasures.add(Treasure.createTreasure());
+        }
+        treasureRepository.saveAll(treasures);
+        return new TreasureCreationResponse();
     }
 }
