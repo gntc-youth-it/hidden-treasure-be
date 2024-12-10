@@ -60,7 +60,7 @@ public class Treasure {
     }
 
     public void addScannedTeam(TreasureFindRequest request) {
-        if (!scannedTeams.add(request.getTeamNumber())) {
+        if (isAlreadyScannedByTeam(request.getTeamNumber()) || !scannedTeams.add(request.getTeamNumber())) {
             throw new BadRequestException(TREASURE_ALREADY_FOUND);
         }
     }
