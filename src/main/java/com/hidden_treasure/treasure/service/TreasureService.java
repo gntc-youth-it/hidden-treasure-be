@@ -1,5 +1,7 @@
 package com.hidden_treasure.treasure.service;
 
+import com.hidden_treasure.common.exception.EntityNotFoundException;
+import com.hidden_treasure.common.exception.model.ExceptionCode;
 import com.hidden_treasure.treasure.domain.QRCode;
 import com.hidden_treasure.treasure.domain.Treasure;
 import com.hidden_treasure.treasure.model.TreasureCreationResponse;
@@ -14,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.hidden_treasure.common.exception.model.ExceptionCode.TREASURE_NOT_FOUND;
+
 @Service
 @RequiredArgsConstructor
 public class TreasureService {
@@ -23,7 +27,7 @@ public class TreasureService {
     @Transactional(readOnly = true)
     public TreasureImageResponse getTreasure(Long id) {
         Treasure treasure = treasureRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 아이디에 해당하는 보물이 없습니다."));
+                .orElseThrow(() -> new EntityNotFoundException(TREASURE_NOT_FOUND));
         return new TreasureImageResponse(treasure);
     }
 
@@ -40,7 +44,7 @@ public class TreasureService {
     @Transactional
     public TreasureFindResponse find(TreasureFindRequest request) {
         Treasure treasure = treasureRepository.findByQrCode(new QRCode(request))
-                .orElseThrow(() -> new IllegalArgumentException("해당 아이디에 해당하는 보물이 없습니다."));
+                .orElseThrow(() -> new EntityNotFoundException(TREASURE_NOT_FOUND));
         treasure.addScannedTeam(request);
         return new TreasureFindResponse();
     }
