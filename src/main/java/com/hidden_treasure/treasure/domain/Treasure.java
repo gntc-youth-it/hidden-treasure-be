@@ -1,6 +1,7 @@
 package com.hidden_treasure.treasure.domain;
 
 import com.google.zxing.WriterException;
+import com.hidden_treasure.treasure.model.TreasureFindRequest;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -54,9 +55,9 @@ public class Treasure {
         return scannedTeams.contains(teamNumber);
     }
 
-    public void addScannedTeam(int teamNumber) {
-        if (!scannedTeams.add(teamNumber)) {
-            throw new IllegalArgumentException("This team has already scanned this treasure.");
+    public void addScannedTeam(TreasureFindRequest request) {
+        if (!scannedTeams.add(request.getTeamNumber())) {
+            throw new IllegalArgumentException("이미 찾은 보물입니다.");
         }
     }
 }

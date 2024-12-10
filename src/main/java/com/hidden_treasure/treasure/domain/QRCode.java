@@ -6,6 +6,7 @@ import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
+import com.hidden_treasure.treasure.model.TreasureFindRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import java.io.ByteArrayOutputStream;
@@ -24,8 +25,16 @@ public class QRCode {
     @Column(name = "code", unique = true)
     private String code;
 
+    public QRCode(String code) {
+        this.code = code;
+    }
+
     private QRCode(UUID uuid) {
-        this.code = uuid.toString();
+        this(uuid.toString());
+    }
+
+    public QRCode(TreasureFindRequest request) {
+        this(request.getTreasureCode());
     }
 
     public static QRCode generateNewQR() {

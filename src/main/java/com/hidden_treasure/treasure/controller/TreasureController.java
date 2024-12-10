@@ -1,5 +1,6 @@
 package com.hidden_treasure.treasure.controller;
 
+import com.hidden_treasure.treasure.model.TreasureFindRequest;
 import com.hidden_treasure.treasure.service.TreasureService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,5 +20,10 @@ public class TreasureController {
     @PostMapping("/treasure")
     public ResponseEntity<?> generateTreasure(@RequestParam Integer treasureCount) {
         return ResponseEntity.ok(treasureService.generateTreasure(treasureCount));
+    }
+
+    @PostMapping("/treasure/find")
+    public ResponseEntity<?> findTreasure(@RequestBody TreasureFindRequest request) {
+        return ResponseEntity.ok(treasureService.find(request));
     }
 }
