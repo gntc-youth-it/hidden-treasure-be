@@ -9,9 +9,11 @@ public class SecurityConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:5173")
-                .allowedOrigins("https://www.bhohwa.click")
-                .allowedOrigins("https://bhohwa.click")
+                .allowedOrigins(
+                        "http://localhost:5173",
+                        "https://www.bhohwa.click",
+                        "https://bhohwa.click"
+                )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
     }
 
