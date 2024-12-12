@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static com.hidden_treasure.common.exception.model.ExceptionCode.TEAM_NOT_FOUND;
 
 @Service
@@ -19,5 +21,10 @@ public class RankService {
     public TeamTreasureStats getRank(Integer teamNumber) {
         return repository.findStatsByTeamNumber(teamNumber)
                 .orElseThrow(() -> new EntityNotFoundException(TEAM_NOT_FOUND));
+    }
+
+    @Transactional(readOnly = true)
+    public List<TeamTreasureStats> getRankSummary() {
+        return repository.findTeamTreasureStats();
     }
 }

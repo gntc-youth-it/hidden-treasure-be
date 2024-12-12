@@ -13,8 +13,14 @@ public class RankController {
 
     private final RankService rankService;
 
+    @GetMapping("/rank")
+    public ResponseEntity<?> getRankSummary() {
+        return ResponseEntity.ok(rankService.getRankSummary());
+    }
+
     @GetMapping("/rank/{teamNumber}")
     public ResponseEntity<?> getRank(@PathVariable Integer teamNumber) {
         return ResponseEntity.ok(rankService.getRank(teamNumber));
     }
+
 }
